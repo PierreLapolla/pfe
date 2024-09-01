@@ -1,8 +1,5 @@
 fastapi
 uvicorn[standard]
-asyncpg
-sqlalchemy[asyncio]
+firebase-admin
 pydantic
-redis
-aioredis
 python-dotenv

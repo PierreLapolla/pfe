@@ -1,19 +1,10 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-import os
-from dotenv import load_dotenv
+from .firebase_config import db
 
-load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+def add_user(user_id, user_data):
+    db.collection('users').document(user_id).set(user_data)
 
-engine = create_async_engine(DATABASE_URL, echo=True)
-SessionLocal = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
-)
 
-async def get_db():
-    async with SessionLocal() as session:
-        yield session
+def get_user(user_id):
+    doc = db.collection('users').document(user_id).get()
+    return doc.to_dict() if doc.exists else None

@@ -1,11 +1,2 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
-
-class Item(Base):
-    __tablename__ = "items"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    description = Column(String, index=True)
+# Since Firebase handles user management, there's no need for a User model in the database.
+# If you need additional user data beyond Firebase, you can extend this in the future.
