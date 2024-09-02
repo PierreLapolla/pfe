@@ -1,14 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
-class UserCreate(BaseModel):
-    email: str
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+    display_name: str
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
     password: str
 
 
-class UserOut(BaseModel):
+class ProfileResponse(BaseModel):
     uid: str
-    email: str
-
-    class Config:
-        orm_mode = True
+    email: EmailStr
+    display_name: str

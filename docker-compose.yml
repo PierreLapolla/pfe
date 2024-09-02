@@ -1,24 +1,24 @@
+version: '3.8'
+
 services:
   backend:
     build:
       context: ./backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 80 --reload
     volumes:
-      - ./backend:/usr/src/app
+      - ./backend:/app
     ports:
-      - "8000:80"
-    env_file:
-      - .env
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
     build:
       context: ./frontend
-    command: flask run --host=0.0.0.0 --port=5000
     volumes:
-      - ./frontend:/usr/src/app
+      - ./frontend:/app
     ports:
-      - "5000:5000"
-    depends_on:
-      - backend
-    env_file:
-      - .env
+      - "3000:3000"
+    environment:
+      - FLASK_ENV=development # development, production
+    command: flask run --host=0.0.0.0 --port=3000

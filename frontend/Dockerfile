@@ -1,10 +1,18 @@
-FROM python:3.10-slim
+# Use the official Python image as the base
+FROM python:3.9-slim
 
-WORKDIR /usr/src/app
+# Set the working directory inside the container
+WORKDIR /app
 
-COPY requirements.txt ./
+# Install the dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the entire application into the container
 COPY . .
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Run Flask in development mode with auto-reloading
+CMD ["flask", "run", "--host=0.0.0.0", "--port=3000"]
