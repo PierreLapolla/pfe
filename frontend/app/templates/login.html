@@ -1,11 +1,15 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
 <h1>Login</h1>
-<form method="POST">
-    <input name="email" placeholder="Email" required type="email"><br>
-    <input name="password" placeholder="Password" required type="password"><br>
-    <input type="submit" value="Login">
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+<form method="post">
+    <label for="email">Email:</label>
+    <input name="email" required type="email"><br>
+    <label for="password">Password:</label>
+    <input name="password" required type="password"><br>
+    <button type="submit">Login</button>
 </form>
-<p><a href="{{ url_for('main.register') }}">Register</a></p>
 {% endblock %}

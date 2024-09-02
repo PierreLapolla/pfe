@@ -1,10 +1,9 @@
-from .firebase_config import db
+from pathlib import Path
 
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-def add_user(user_id, user_data):
-    db.collection('users').document(user_id).set(user_data)
+cred = credentials.Certificate(Path('pfe-gaming-firebase-adminsdk-3n7rw-15c59651df.json'))
+firebase_admin.initialize_app(cred)
 
-
-def get_user(user_id):
-    doc = db.collection('users').document(user_id).get()
-    return doc.to_dict() if doc.exists else None
+db = firestore.client()

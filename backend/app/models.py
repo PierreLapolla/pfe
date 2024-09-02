@@ -1,2 +1,13 @@
-# Since Firebase handles user management, there's no need for a User model in the database.
-# If you need additional user data beyond Firebase, you can extend this in the future.
+from pydantic import BaseModel, EmailStr
+
+
+class User(BaseModel):
+    email: EmailStr
+    password: str
+    display_name: str
+
+
+class UserProfile(BaseModel):
+    uid: str
+    display_name: str
+    email: EmailStr
