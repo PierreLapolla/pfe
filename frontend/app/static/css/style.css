@@ -1,64 +1,68 @@
-/* Basic CSS Stylesheet from copilot */
-
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    line-height: 1.6;
 }
 
-header {
-    background-color: #333;
-    color: #fff;
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+header, footer {
+    background-color: #333; /* Darker background for better contrast */
+    color: #fff; /* White text for maximum contrast */
     padding: 10px 0;
     text-align: center;
 }
 
-nav {
-    display: flex;
-    justify-content: center;
-    background-color: #444;
+header nav ul li a {
+    color: #fff; /* Ensure links in the navigation bar are white */
+    font-weight: bold; /* Make the text bold for better readability */
 }
 
-nav a {
-    color: #fff;
-    padding: 14px 20px;
-    text-decoration: none;
-    text-align: center;
+header nav ul li a:hover {
+    color: #ff6347; /* Change to a bright color on hover for visibility */
 }
 
-nav a:hover {
-    background-color: #555;
+main {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+h1 {
+    color: #333; /* Use a darker shade for headings */
 }
 
-h1, h2, h3 {
-    color: #333;
+p, li, a {
+    color: #444; /* Slightly darker text for general readability */
 }
 
 button {
-    background-color: #333;
-    color: #fff;
-    border: none;
+    background-color: #333; /* Dark background for buttons */
+    color: #fff; /* White text on buttons */
     padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #555;
-}
-
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+    background-color: #ff6347; /* Highlight button on hover */
 }

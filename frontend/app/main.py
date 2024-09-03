@@ -1,22 +1,16 @@
-# main.py
-
-import os
-from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, session, url_for, flash
 import requests
-
-load_dotenv()
+from flask import flash, Flask, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')
-if not app.secret_key:
-    raise Exception("SECRET_KEY is not set in environment variables")
+app.secret_key = 'supersecretkeydelamortquitueavoirsionlachangeunjour'
 
 API_URL = 'http://backend:8000'
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -38,6 +32,7 @@ def register():
             return render_template('register.html')
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -47,7 +42,6 @@ def login():
         if response.status_code == 200:
             data = response.json()
             session['id_token'] = data['id_token']
-            session['refresh_token'] = data['refresh_token']
             flash("Logged in successfully!", "success")
             return redirect(url_for('profile'))
         else:
@@ -56,27 +50,27 @@ def login():
             return render_template('login.html')
     return render_template('login.html')
 
+
 @app.route('/profile')
 def profile():
-    id_token = session.get('id_token')
-    if not id_token:
+    if 'id_token' not in session:
         flash("You need to log in first.", "warning")
         return redirect(url_for('login'))
-    headers = {'Authorization': f'Bearer {id_token}'}
+
+    id_token = session['id_token']
+    headers = {"Authorization": f"Bearer {id_token}"}
     response = requests.get(f"{API_URL}/profile", headers=headers)
+
     if response.status_code == 200:
-        user_profile = response.json()
-        return render_template('profile.html', user=user_profile)
-    elif response.status_code == 401:
-        flash("Session expired. Please log in again.", "warning")
-        return redirect(url_for('login'))
+        profile_data = response.json()
+        return render_template('profile.html', profile=profile_data)
     else:
-        error = response.json().get('detail', 'Failed to fetch profile')
-        flash(error, "danger")
+        flash("Failed to load profile.", "danger")
         return redirect(url_for('login'))
+
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    flash("Logged out successfully!", "success")
+    session.pop('id_token', None)
+    flash("You have been logged out.", "success")
     return redirect(url_for('index'))
