@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Web App</title>
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
 <header>
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Home</a></li>
-            {% if session.get('token') %}
+            {% if session.get('id_token') %}
             <li><a href="{{ url_for('profile') }}">Profile</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
@@ -21,6 +21,22 @@
         </ul>
     </nav>
 </header>
+
+<!-- Flash messages section -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div id="flash-messages"
+     style="position: relative; z-index: 1000; margin: 20px; padding: 10px; border: 1px solid black;">
+
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
 <main>
     {% block content %}{% endblock %}
 </main>

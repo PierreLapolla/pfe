@@ -1,7 +1,5 @@
-import os
-
 import requests
-from dotenv import load_dotenv
+import os
 from fastapi import APIRouter, Depends, HTTPException, Response
 from firebase_admin import auth
 
@@ -9,15 +7,7 @@ from .database import db
 from .dependencies import get_current_user
 from .schemas import LoginRequest, ProfileResponse, RegisterRequest
 
-load_dotenv()
-
 router = APIRouter()
-
-FIREBASE_WEB_API_KEY = os.getenv('FIREBASE_WEB_API_KEY')
-if not FIREBASE_WEB_API_KEY:
-    raise Exception("FIREBASE_WEB_API_KEY is not set in environment variables")
-
-FIREBASE_AUTH_URL = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key={FIREBASE_WEB_API_KEY}"
 
 
 @router.post("/register")
@@ -40,32 +30,21 @@ async def register_user(user: RegisterRequest):
 @router.post("/login")
 async def login_user(user: LoginRequest):
     try:
-        # Verify user's email and password (implement your own verification logic)
-        user_record = auth.get_user_by_email(user.email)
-
-        # Generate custom token
-        custom_token = auth.create_custom_token(user_record.uid).decode('utf-8')
-
-        # Exchange custom token for ID token
         payload = {
-            "token": custom_token,
+            "email": user.email,
+            "password": user.password,
             "returnSecureToken": True
         }
-        response = requests.post(FIREBASE_AUTH_URL, json=payload)
+        response = requests.post(
+            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={os.getenv('FIREBASE_API_KEY')}",
+            json=payload
+        )
         if response.status_code != 200:
             raise HTTPException(status_code=400,
-                                detail=f"Failed to exchange custom token: {response.json().get('error', {}).get('message', 'Unknown error')}")
+                                detail=f"Login failed: {response.json().get('error', {}).get('message', 'Unknown error')}")
 
         id_token = response.json().get('idToken')
-        refresh_token = response.json().get('refreshToken')
-
-        return {
-            "id_token": id_token,
-            "refresh_token": refresh_token,
-            "expires_in": response.json().get('expiresIn')
-        }
-    except auth.UserNotFoundError:
-        raise HTTPException(status_code=404, detail="User not found")
+        return {"id_token": id_token}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Login failed: {str(e)}")
 
