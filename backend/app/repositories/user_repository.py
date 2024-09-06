@@ -15,3 +15,7 @@ class UserRepository:
         user_doc = db.collection("users").document(uid).get()
         user_data = user_doc.to_dict()
         return ProfileResponse(uid=uid, **user_data)
+
+    @staticmethod
+    def delete_user(uid: str):
+        db.collection("users").document(uid).delete()
