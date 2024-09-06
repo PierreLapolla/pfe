@@ -2,7 +2,7 @@ import os
 from typing import Any, Callable, Dict, Optional
 
 import requests
-from flask import flash, FlaskResponse, redirect, session, url_for
+from flask import flash, Response as FlaskResponse, redirect, session, url_for
 
 
 def is_logged_in() -> bool:
@@ -24,7 +24,7 @@ def make_api_request(
             response = requests.get(url, headers=headers)
         return response
     except requests.RequestException:
-        flash("Failed to connect to the server.", "danger")
+        flash(f"Failed to connect to the server.", "danger")
         return None
 
 
