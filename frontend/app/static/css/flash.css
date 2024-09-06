@@ -1,0 +1,39 @@
+/* Flash message container */
+.flash-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+}
+
+/* Success messages */
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Warning messages */
+.flash-message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Danger messages */
+.flash-message.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Make flash messages dismissible */
+.flash-message .close {
+    float: right;
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+    color: inherit;
+}

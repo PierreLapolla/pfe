@@ -5,6 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Web App</title>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/flash.css') }}" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -29,7 +30,7 @@
      style="position: relative; z-index: 1000; margin: 20px; padding: 10px; border: 1px solid black;">
 
     {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">
+    <div class="flash-message {{ category }}">
         {{ message }}
     </div>
     {% endfor %}
