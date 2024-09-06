@@ -1,10 +1,12 @@
 import requests
-from firebase_admin import auth
 from fastapi import HTTPException
+from firebase_admin import auth
+
 from ..repositories.user_repository import UserRepository
 from ..schemas.auth_schemas import RegisterRequest
 
 API_KEY = 'AIzaSyDq6djBTsk4OMxXOLJe39WxbiBKQoG40mo'
+
 
 class AuthService:
     @staticmethod
@@ -36,3 +38,8 @@ class AuthService:
     def get_profile(user_id: str):
         profile = UserRepository.get_user_profile(user_id)
         return profile
+
+    @staticmethod
+    def delete_account(user_id: str):
+        UserRepository.delete_user(user_id)
+        auth.delete_user(user_id)
