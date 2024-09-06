@@ -1,11 +1,11 @@
+import os
+
 import requests
 from fastapi import HTTPException
 from firebase_admin import auth
 
 from ..repositories.user_repository import UserRepository
 from ..schemas.auth_schemas import RegisterRequest
-
-API_KEY = 'AIzaSyDq6djBTsk4OMxXOLJe39WxbiBKQoG40mo'
 
 
 class AuthService:
@@ -26,7 +26,7 @@ class AuthService:
             "returnSecureToken": True
         }
         response = requests.post(
-            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={API_KEY}",
+            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={os.getenv('FIREBASE_API_KEY')}",
             json=payload
         )
         if response.status_code != 200:

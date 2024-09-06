@@ -9,7 +9,8 @@ Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
 ### Requirements
 
 - [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/) (If using PyCharm, make sure to have the Docker plugin enabled)
+- [Docker Compose](https://docs.docker.com/compose/install/) (If using PyCharm, make sure to have the Docker plugin
+  enabled)
 
 ### Setup
 
