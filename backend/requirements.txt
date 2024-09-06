@@ -3,4 +3,3 @@ uvicorn
 firebase-admin
 pydantic
 email-validator
-python-dotenv
