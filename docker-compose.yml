@@ -14,9 +14,9 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: flask_frontend
     volumes:
-      - ./frontend:/app
+      - ./flask_frontend:/app
     ports:
       - "3000:3000"
     environment:
