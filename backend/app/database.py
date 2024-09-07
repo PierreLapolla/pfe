@@ -1,8 +1,10 @@
+import os
 from pathlib import Path
 
 from firebase_admin import credentials, firestore, initialize_app
 
-cred = credentials.Certificate(Path('pfe-gaming-60db4-firebase-adminsdk-q1p8j-f04d11623b.json'))
+credentials_path = Path(os.getenv('FIREBASE_CREDENTIALS_PATH'))
+cred = credentials.Certificate(credentials_path)
 initialize_app(cred)
 
 db = firestore.client()
