@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from firebase_admin import auth
 
 from ..repositories.user_repository import UserRepository
-from ..schemas.auth_schemas import RegisterRequest, ProfileResponse
+from ..schemas.auth_schemas import ProfileResponse, RegisterRequest
 
 
 class AuthService:

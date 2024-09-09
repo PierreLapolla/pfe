@@ -2,7 +2,7 @@ import os
 from typing import Any, Callable, Dict, Optional
 
 import requests
-from flask import flash, Response as FlaskResponse, redirect, session, url_for
+from flask import flash, redirect, Response as FlaskResponse, session, url_for
 
 
 def is_logged_in() -> bool:
