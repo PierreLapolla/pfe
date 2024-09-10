@@ -1,0 +1,86 @@
+\documentclass[10pt]{article}
+
+% Geometry for page layout
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel} % Language 'english' or 'frenchb', delete out/ if changing language
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{multicol}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{sectsty}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+\usepackage{indentfirst}
+\usepackage{parskip}
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parindent}{15pt}
+\setlength{\parskip}{1em}
+
+% Definitions
+\definecolor{bleu_ece}{HTML}{00727A}
+\newcommand{\bleuece}{bleu_ece}
+
+\newcommand{\mytitle}{Rapport de Projet de Fin d'Études \textit{PFE24-P-282}}
+\newcommand{\myauthor}{
+    Pierre LAPOLLA \and
+    Matéo DOMINGUEZ \and
+    Alban GAUTROT \and
+    Thomas ROUSTAN \and
+    Arnaud BECKER
+}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=\bleuece,
+    urlcolor=black,
+    citecolor=black,
+    pdfborder={0 0 0}
+}
+
+% Section styles
+\sectionfont{\color{\bleuece}}
+\subsectionfont{\color{\bleuece}}
+\subsubsectionfont{\color{\bleuece}}
+
+
+% Header and footer
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{\vspace{-2em}\includegraphics[height=3em]{images/logo_ece}}
+    \fancyfoot[L]{\scriptsize \textit{\mytitle}}
+    \fancyfoot[C]{\thepage}
+    \fancyfoot[R]{\scriptsize \textit{}}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+\pagestyle{plain}
+
+% Title and authors, see text definition above
+\title{\mytitle}
+\author{\myauthor}
+\date{}
+% \date{\today}
+
+\begin{document}
+
+    \input{sections/cover}
+
+\end{document}
