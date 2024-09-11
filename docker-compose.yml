@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   backend:
     build:
       context: ./backend
@@ -14,9 +15,9 @@ services:
 
   frontend:
     build:
-      context: flask_frontend
+      context: frontend
     volumes:
-      - ./flask_frontend:/app
+      - ./frontend:/app
     ports:
       - "3000:3000"
     environment:
