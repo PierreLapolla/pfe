@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="pfe" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="pfe" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (pfe)" project-jdk-type="Python SDK" />
 </project>

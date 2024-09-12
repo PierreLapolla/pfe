@@ -10,6 +10,7 @@ Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
 
 - [Pycharm](https://www.jetbrains.com/pycharm/download/)
 - [Docker](https://docs.docker.com/get-docker/) running
+- Python environment (strongly recommended but mandatory for LaTeX compilation)
 
 ### Setup
 
@@ -24,6 +25,13 @@ Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
 2. Click the double green arrow next to `services`
 3. See backend documentation at [localhost:8000/docs](http://localhost:8000/docs)
 4. See frontend at [localhost:3000](http://localhost:3000)
+
+### LaTeX
+
+```bash
+pip install docker
+python3 rapport/compile.py
+```
 
 ## Notes
 
