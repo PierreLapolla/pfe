@@ -20,12 +20,12 @@ Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
 
 ### Run
 
-2. Open [docker-compose.yml](docker-compose.yml)
-3. Click the double green arrow next to the `services` section on line 3
-4. See backend documentation at [localhost:8000/docs](http://localhost:8000/docs)
-5. See frontend at [localhost:3000](http://localhost:3000)
+1. Open [docker-compose.yml](docker-compose.yml)
+2. Click the double green arrow next to `services`
+3. See backend documentation at [localhost:8000/docs](http://localhost:8000/docs)
+4. See frontend at [localhost:3000](http://localhost:3000)
 
 ## Notes
 
-- See [Shadcn](https://ui.shadcn.com/docs) for possible frontend development
+- See [Shadcn](https://ui.shadcn.com/docs) for possible frontend web development
 
