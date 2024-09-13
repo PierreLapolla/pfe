@@ -1,7 +1,7 @@
 import os
 
 import requests
-from fastapi import HTTPException
+from fastapi import HTTPException, Response
 from firebase_admin import auth
 
 from ..repositories.user_repository import UserRepository
@@ -39,6 +39,12 @@ class AuthService:
         id_token = response.json().get('idToken')
         log.info(f"user {email} has been logged in")
         return id_token
+
+    @staticmethod
+    def logout_user(response: Response) -> None:
+        response.delete_cookie("id_token")
+        response.delete_cookie("refresh_token")
+        log.info("user has been logged out")
 
     @staticmethod
     def get_profile(user_id: str) -> ProfileResponse:

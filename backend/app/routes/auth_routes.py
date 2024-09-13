@@ -24,17 +24,9 @@ async def login_user(user: LoginRequest) -> Dict:
     return {"id_token": id_token}
 
 
-@router.get("/profile", response_model=ProfileResponse)
-async def get_profile(current_user=Depends(get_current_user)) -> ProfileResponse:
-    profile = AuthService.get_profile(current_user['uid'])
-    log.info(f"user {profile.email} profile retrieved successfully")
-    return profile
-
-
 @router.post("/logout")
 async def logout_user(response: Response) -> Dict:
-    response.delete_cookie("id_token")
-    response.delete_cookie("refresh_token")
+    AuthService.logout_user(response)
     log.info(f"user logged out successfully")
     return {"message": "User logged out successfully"}
 
@@ -44,3 +36,10 @@ async def delete_account(current_user=Depends(get_current_user)) -> Dict:
     AuthService.delete_account(current_user['uid'])
     log.info(f"user {current_user['email']} deleted successfully")
     return {"message": "User deleted successfully"}
+
+
+@router.get("/profile", response_model=ProfileResponse)
+async def get_profile(current_user=Depends(get_current_user)) -> ProfileResponse:
+    profile = AuthService.get_profile(current_user['uid'])
+    log.info(f"user {profile.email} profile retrieved successfully")
+    return profile
