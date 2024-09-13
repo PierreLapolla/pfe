@@ -9,3 +9,4 @@ COPY src /app
 
 # Run pdflatex on the main LaTeX file
 RUN pdflatex main.tex
+RUN pdflatex main.tex

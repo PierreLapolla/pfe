@@ -17,7 +17,7 @@ Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
 1. Clone the repository
 2. Rename [.env.template](backend/.env.template) in `backend/` to `.env` and fill in the required fields
 3. Rename [.env.template](frontend/.env.template) in `frontend/` to `.env` and fill in the required fields
-4. Ask Pedro for the [Firebase](https://console.firebase.google.com/) `.json` credentials file
+4. Secrets are on Discord
 
 ### Run
 

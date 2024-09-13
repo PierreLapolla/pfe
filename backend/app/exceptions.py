@@ -2,10 +2,12 @@ from fastapi import HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from firebase_admin import auth
+from .logger import log
 
 
 # Handle Invalid ID Token error (401 Unauthorized)
 async def invalid_token_exception_handler(request: Request, exc: auth.InvalidIdTokenError) -> JSONResponse:
+    log.error(f"invalid id token: {exc}")
     return JSONResponse(
         status_code=401,
         content={"detail": "Invalid authentication token."}
@@ -14,6 +16,7 @@ async def invalid_token_exception_handler(request: Request, exc: auth.InvalidIdT
 
 # Handle Expired ID Token error (401 Unauthorized)
 async def expired_token_exception_handler(request: Request, exc: auth.ExpiredIdTokenError) -> JSONResponse:
+    log.error(f"expired id token: {exc}")
     return JSONResponse(
         status_code=401,
         content={"detail": "The authentication token has expired."}
@@ -22,6 +25,7 @@ async def expired_token_exception_handler(request: Request, exc: auth.ExpiredIdT
 
 # Handle Revoked ID Token error (401 Unauthorized)
 async def revoked_token_exception_handler(request: Request, exc: auth.RevokedIdTokenError) -> JSONResponse:
+    log.error(f"revoked id token: {exc}")
     return JSONResponse(
         status_code=401,
         content={"detail": "The authentication token has been revoked."}
@@ -30,6 +34,7 @@ async def revoked_token_exception_handler(request: Request, exc: auth.RevokedIdT
 
 # Handle public certificate fetch errors (500 Internal Server Error)
 async def certificate_fetch_error_handler(request: Request, exc: auth.CertificateFetchError) -> JSONResponse:
+    log.error(f"certificate fetch error: {exc}")
     return JSONResponse(
         status_code=500,
         content={"detail": "Error fetching authentication certificate."}
@@ -38,6 +43,7 @@ async def certificate_fetch_error_handler(request: Request, exc: auth.Certificat
 
 # Handle FastAPI's request validation errors (422 Unprocessable Entity)
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    log.error(f"validation error: {exc}")
     return JSONResponse(
         status_code=422,
         content={"detail": exc.errors(), "body": exc.body}
@@ -46,6 +52,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # General handler for HTTP exceptions (e.g., 400 Bad Request, 403 Forbidden, 404 Not Found)
 async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    log.error(f"http exception: {exc}")
     return JSONResponse(
         status_code=exc.status_code,
         content={"detail": exc.detail}
@@ -54,6 +61,7 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 
 # General handler for uncaught exceptions (500 Internal Server Error)
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    log.error(f"internal server error: {exc}")
     return JSONResponse(
         status_code=500,
         content={"detail": f"An internal server error occurred: {exc}"}
