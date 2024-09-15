@@ -47,13 +47,13 @@ class AuthService:
         log.info("user has been logged out")
 
     @staticmethod
-    def get_profile(user_id: str) -> ProfileResponse:
-        profile = UserRepository.get_user_profile(user_id)
+    def get_profile_user(user_id: str) -> ProfileResponse:
+        profile = UserRepository.get_profile_user(user_id)
         log.info(f"retrieved profile for user {user_id}")
         return profile
 
     @staticmethod
-    def delete_account(user_id: str) -> None:
+    def delete_user(user_id: str) -> None:
         UserRepository.delete_user(user_id)
         auth.delete_user(user_id)
         log.info(f"user {user_id} has been deleted")

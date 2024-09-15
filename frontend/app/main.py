@@ -14,13 +14,13 @@ def index() -> str:
     return render_template('index.html')
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/auth/register', methods=['GET', 'POST'])
 def register() -> FlaskResponse:
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
         display_name = request.form['display_name']
-        response = make_api_request('/register', method='POST', json={
+        response = make_api_request('/auth/register', method='POST', json={
             "email": email,
             "password": password,
             "display_name": display_name
@@ -29,12 +29,12 @@ def register() -> FlaskResponse:
     return render_template('register.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/auth/login', methods=['GET', 'POST'])
 def login() -> FlaskResponse:
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        response = make_api_request('/login', method='POST', json={"email": email, "password": password})
+        response = make_api_request('/auth/login', method='POST', json={"email": email, "password": password})
 
         def on_success(response: requests.Response) -> FlaskResponse:
             data = response.json()
@@ -46,7 +46,7 @@ def login() -> FlaskResponse:
     return render_template('login.html')
 
 
-@app.route('/profile')
+@app.route('/auth/profile')
 def profile() -> FlaskResponse:
     if not is_logged_in():
         flash("You need to log in first.", "warning")
@@ -54,7 +54,7 @@ def profile() -> FlaskResponse:
 
     id_token = session['id_token']
     headers = {"Authorization": f"Bearer {id_token}"}
-    response = make_api_request('/profile', headers=headers)
+    response = make_api_request('/auth/profile', headers=headers)
 
     def on_success(response: requests.Response) -> str:
         profile_data = response.json()
@@ -63,14 +63,14 @@ def profile() -> FlaskResponse:
     return handle_response(response, None, 'login', "Failed to load profile", success_action=on_success)
 
 
-@app.route('/logout')
+@app.route('/auth/logout')
 def logout() -> FlaskResponse:
     session.pop('id_token', None)
     flash("You have been logged out.", "success")
     return redirect(url_for('index'))
 
 
-@app.route('/delete-account', methods=['POST'])
+@app.route('/auth/delete', methods=['POST'])
 def delete_account() -> FlaskResponse:
     if not is_logged_in():
         flash("You need to log in first.", "warning")
@@ -78,5 +78,5 @@ def delete_account() -> FlaskResponse:
 
     id_token = session['id_token']
     headers = {"Authorization": f"Bearer {id_token}"}
-    response = make_api_request('/delete-account', method='POST', headers=headers)
+    response = make_api_request('/auth/delete', method='POST', headers=headers)
     return handle_response(response, "Account deleted successfully.", 'index', "Failed to delete account")

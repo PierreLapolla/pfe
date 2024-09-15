@@ -15,7 +15,6 @@ class LoggerSingleton:
             cls._instance.logger = logging.getLogger('app_logger')
             cls._instance.logger.setLevel(logging.INFO)
 
-            # Create handler that rotates logs after 5MB, keeping 3 backups
             handler = RotatingFileHandler(log_file, maxBytes=5 * 1024 * 1024, backupCount=3)
             handler.setLevel(logging.INFO)
 
@@ -31,4 +30,12 @@ class LoggerSingleton:
         return self.logger
 
 
+logging.basicConfig(level=logging.DEBUG)
 log = LoggerSingleton().get_logger()
+
+# Example usage
+# log.debug('debug message')
+# log.info('info message')
+# log.warning('warning message')
+# log.error('error message')
+# log.critical('critical message')

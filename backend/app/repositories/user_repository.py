@@ -13,7 +13,7 @@ class UserRepository:
         log.info(f"user {uid} saved")
 
     @staticmethod
-    def get_user_profile(uid: str) -> ProfileResponse:
+    def get_profile_user(uid: str) -> ProfileResponse:
         user_data = db.collection("users").document(uid).get().to_dict()
         response = ProfileResponse(uid=uid, **user_data)
         log.info(f"retrieved user {uid} profile")
