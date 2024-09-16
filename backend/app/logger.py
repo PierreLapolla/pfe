@@ -1,12 +1,21 @@
 import logging
-from pathlib import Path
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 
 class LoggerSingleton:
+    """
+    Singleton class to initialize and manage the application logger.
+    """
     _instance = None
 
     def __new__(cls):
+        """
+        Create a new instance of LoggerSingleton if it doesn't exist.
+
+        :return: The singleton instance of LoggerSingleton.
+        :rtype: LoggerSingleton
+        """
         if cls._instance is None:
             cls._instance = super(LoggerSingleton, cls).__new__(cls)
             log_file = Path('logs/app.log')
@@ -27,6 +36,12 @@ class LoggerSingleton:
         return cls._instance
 
     def get_logger(self):
+        """
+        Get the logger instance.
+
+        :return: The logger instance.
+        :rtype: logging.Logger
+        """
         return self.logger
 
 

@@ -5,8 +5,17 @@ from firebase_admin import auth
 from .logger import log
 
 
-# Handle Invalid ID Token error (401 Unauthorized)
 async def invalid_token_exception_handler(request: Request, exc: auth.InvalidIdTokenError) -> JSONResponse:
+    """
+    Handle Invalid ID Token error (401 Unauthorized).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The exception raised for an invalid ID token.
+    :type exc: auth.InvalidIdTokenError
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"invalid id token: {exc}")
     return JSONResponse(
         status_code=401,
@@ -14,8 +23,17 @@ async def invalid_token_exception_handler(request: Request, exc: auth.InvalidIdT
     )
 
 
-# Handle Expired ID Token error (401 Unauthorized)
 async def expired_token_exception_handler(request: Request, exc: auth.ExpiredIdTokenError) -> JSONResponse:
+    """
+    Handle Expired ID Token error (401 Unauthorized).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The exception raised for an expired ID token.
+    :type exc: auth.ExpiredIdTokenError
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"expired id token: {exc}")
     return JSONResponse(
         status_code=401,
@@ -23,8 +41,17 @@ async def expired_token_exception_handler(request: Request, exc: auth.ExpiredIdT
     )
 
 
-# Handle Revoked ID Token error (401 Unauthorized)
 async def revoked_token_exception_handler(request: Request, exc: auth.RevokedIdTokenError) -> JSONResponse:
+    """
+    Handle Revoked ID Token error (401 Unauthorized).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The exception raised for a revoked ID token.
+    :type exc: auth.RevokedIdTokenError
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"revoked id token: {exc}")
     return JSONResponse(
         status_code=401,
@@ -32,8 +59,17 @@ async def revoked_token_exception_handler(request: Request, exc: auth.RevokedIdT
     )
 
 
-# Handle public certificate fetch errors (500 Internal Server Error)
 async def certificate_fetch_error_handler(request: Request, exc: auth.CertificateFetchError) -> JSONResponse:
+    """
+    Handle public certificate fetch errors (500 Internal Server Error).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The exception raised when fetching the public certificate.
+    :type exc: auth.CertificateFetchError
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"certificate fetch error: {exc}")
     return JSONResponse(
         status_code=500,
@@ -41,8 +77,17 @@ async def certificate_fetch_error_handler(request: Request, exc: auth.Certificat
     )
 
 
-# Handle FastAPI's request validation errors (422 Unprocessable Entity)
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    """
+    Handle FastAPI's request validation errors (422 Unprocessable Entity).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The exception raised for request validation errors.
+    :type exc: RequestValidationError
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"validation error: {exc}")
     return JSONResponse(
         status_code=422,
@@ -50,8 +95,17 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
-# General handler for HTTP exceptions (e.g., 400 Bad Request, 403 Forbidden, 404 Not Found)
 async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    """
+    General handler for HTTP exceptions (e.g., 400 Bad Request, 403 Forbidden, 404 Not Found).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The HTTP exception raised.
+    :type exc: HTTPException
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"http exception: {exc}")
     return JSONResponse(
         status_code=exc.status_code,
@@ -59,8 +113,17 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
     )
 
 
-# General handler for uncaught exceptions (500 Internal Server Error)
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """
+    General handler for uncaught exceptions (500 Internal Server Error).
+
+    :param request: The request object.
+    :type request: Request
+    :param exc: The exception raised.
+    :type exc: Exception
+    :return: JSON response with error details.
+    :rtype: JSONResponse
+    """
     log.error(f"internal server error: {exc}")
     return JSONResponse(
         status_code=500,
@@ -69,6 +132,12 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
 
 
 def add_exception_handlers(app) -> None:
+    """
+    Add exception handlers to the FastAPI application.
+
+    :param app: The FastAPI application instance.
+    :type app: FastAPI
+    """
     app.add_exception_handler(auth.InvalidIdTokenError, invalid_token_exception_handler)
     app.add_exception_handler(auth.ExpiredIdTokenError, expired_token_exception_handler)
     app.add_exception_handler(auth.RevokedIdTokenError, revoked_token_exception_handler)

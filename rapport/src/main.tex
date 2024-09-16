@@ -34,8 +34,12 @@
 % Definitions
 \definecolor{bleu_ece}{HTML}{00727A}
 \newcommand{\bleuece}{bleu_ece}
+\definecolor{bleu_google}{HTML}{1A0DAB}
+\newcommand{\bleugoogle}{bleu_google}
+\definecolor{orange}{HTML}{FF5733}
+\newcommand{\orange}{orange}
 
-\newcommand{\mytitle}{Rapport de Projet de Fin d'Études \textit{PFE24-P-282}}
+\newcommand{\mytitle}{Projet de Fin d'Études \textit{PFE24-P-282}}
 \newcommand{\myauthor}{
     Pierre LAPOLLA \and
     Matéo DOMINGUEZ \and
@@ -48,8 +52,8 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=\bleuece,
-    urlcolor=black,
-    citecolor=black,
+    urlcolor=\bleugoogle,
+    citecolor=\orange,
     pdfborder={0 0 0}
 }
 
@@ -64,7 +68,7 @@
     \fancyhf{}
     \fancyhead[L]{}
     \fancyhead[C]{}
-    \fancyhead[R]{\vspace{-2em}\includegraphics[height=3em]{images/logo_ece}}
+    \fancyhead[R]{\includegraphics[height=3em]{images/logo_ece}}
     \fancyfoot[L]{\scriptsize \textit{\mytitle}}
     \fancyfoot[C]{\thepage}
     \fancyfoot[R]{\scriptsize \textit{}}
