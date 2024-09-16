@@ -51,7 +51,10 @@ class ConfigSingleton:
         :return: The configuration value or the default value if the key is not found.
         :rtype: Optional[Any]
         """
-        return self.config.get(key, default)
+        var = self.config.get(key, default)
+        if var is None:
+            log.warning(f"config key '{key}' not found")
+        return var
 
     def _merge_env_variables(self):
         """
