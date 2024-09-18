@@ -12,7 +12,7 @@ class FirebaseClient:
     """
     _instance = None
 
-    def __new__(cls):
+    def __new__(cls) -> firestore.client:
         """
         Create a new instance of FirebaseClient if it doesn't exist.
 

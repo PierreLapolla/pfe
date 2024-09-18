@@ -10,20 +10,15 @@ from .logger import log
 class ConfigSingleton:
     """
     Singleton class to load and manage configuration from a YAML file and environment variables.
-
-    :param file_path: The path to the configuration YAML file.
-    :type file_path: Union[str, Path]
     """
     _instance = None
 
-    def __new__(cls, file_path: Union[str, Path]):
+    def __new__(cls, file_path: Union[str, Path]) -> 'ConfigSingleton':
         """
         Create a new instance of ConfigSingleton if it doesn't exist.
 
         :param file_path: The path to the configuration YAML file.
-        :type file_path: Union[str, Path]
         :return: The singleton instance of ConfigSingleton.
-        :rtype: ConfigSingleton
         """
         if cls._instance is None:
             cls._instance = super(ConfigSingleton, cls).__new__(cls)
@@ -45,31 +40,30 @@ class ConfigSingleton:
         Get a configuration value by key.
 
         :param key: The configuration key.
-        :type key: str
         :param default: The default value to return if the key is not found.
-        :type default: Optional[Any]
         :return: The configuration value or the default value if the key is not found.
-        :rtype: Optional[Any]
         """
         var = self.config.get(key, default)
         if var is None:
             log.warning(f"config key '{key}' not found")
         return var
 
-    def _merge_env_variables(self):
+    def _merge_env_variables(self) -> None:
         """
         Override configuration values with environment variables where applicable.
+
+        :return: None
         """
         for key in self.config:
-            env_value = os.getenv(key.upper())
+            env_value = os.getenv(key)
             if env_value is not None:
-                log.info(f"overriding config key '{key}' with value from environment variable '{key.upper()}'")
+                log.info(f"overriding config key '{key}' with value from environment variable '{key}'")
                 self.config[key] = env_value
 
         for key, value in os.environ.items():
             if key.upper() not in self.config:
                 log.info(f"adding environment variable '{key}' to config")
-                self.config[key.upper()] = value
+                self.config[key] = value
 
 
 config = ConfigSingleton('config.yaml')

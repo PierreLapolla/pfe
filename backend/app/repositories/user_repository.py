@@ -10,11 +10,8 @@ class UserRepository:
         Save a new user to the database.
 
         :param uid: The unique identifier for the user.
-        :type uid: str
-        :param user_data: The user data to be saved, including display name and email.
-        :type user_data: RegisterRequest
+        :param user_data: The user data to be saved.
         :return: None
-        :rtype: None
         """
         db.collection("users").document(uid).set({
             "display_name": user_data.display_name,
@@ -28,9 +25,7 @@ class UserRepository:
         Retrieve a user's profile from the database.
 
         :param uid: The unique identifier for the user.
-        :type uid: str
         :return: The user's profile data.
-        :rtype: ProfileResponse
         """
         user_data = db.collection("users").document(uid).get().to_dict()
         response = ProfileResponse(uid=uid, **user_data)
@@ -43,9 +38,7 @@ class UserRepository:
         Delete a user from the database.
 
         :param uid: The unique identifier for the user.
-        :type uid: str
         :return: None
-        :rtype: None
         """
         db.collection("users").document(uid).delete()
         log.info(f"user {uid} deleted")

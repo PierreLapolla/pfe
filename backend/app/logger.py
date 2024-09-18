@@ -9,12 +9,11 @@ class LoggerSingleton:
     """
     _instance = None
 
-    def __new__(cls):
+    def __new__(cls) -> 'LoggerSingleton':
         """
         Create a new instance of LoggerSingleton if it doesn't exist.
 
         :return: The singleton instance of LoggerSingleton.
-        :rtype: LoggerSingleton
         """
         if cls._instance is None:
             cls._instance = super(LoggerSingleton, cls).__new__(cls)
@@ -35,12 +34,11 @@ class LoggerSingleton:
 
         return cls._instance
 
-    def get_logger(self):
+    def get_logger(self) -> logging.Logger:
         """
         Get the logger instance.
 
         :return: The logger instance.
-        :rtype: logging.Logger
         """
         return self.logger
 

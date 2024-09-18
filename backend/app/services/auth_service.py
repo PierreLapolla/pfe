@@ -15,9 +15,7 @@ class AuthService:
         Register a new user.
 
         :param user_data: The user registration data.
-        :type user_data: RegisterRequest
         :return: None
-        :rtype: None
         """
         user_record = auth.create_user(
             email=user_data.email,
@@ -33,11 +31,8 @@ class AuthService:
         Log in a user.
 
         :param email: The email address of the user.
-        :type email: str
         :param password: The password for the user account.
-        :type password: str
         :return: The ID token for the logged-in user.
-        :rtype: str
         :raises HTTPException: If the login credentials are invalid.
         """
         payload = {
@@ -45,6 +40,7 @@ class AuthService:
             "password": password,
             "returnSecureToken": True
         }
+
         response = requests.post(
             f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config('FIREBASE_API_KEY')}",
             json=payload
@@ -64,9 +60,7 @@ class AuthService:
         Log out the current user.
 
         :param response: The response object.
-        :type response: Response
         :return: None
-        :rtype: None
         """
         response.delete_cookie("id_token")
         response.delete_cookie("refresh_token")
@@ -78,9 +72,7 @@ class AuthService:
         Retrieve the profile of a user.
 
         :param user_id: The unique identifier for the user.
-        :type user_id: str
         :return: The profile data of the user.
-        :rtype: ProfileResponse
         """
         profile = UserRepository.get_profile_user(user_id)
         log.info(f"retrieved profile for user {user_id}")
@@ -92,9 +84,7 @@ class AuthService:
         Delete a user.
 
         :param user_id: The unique identifier for the user.
-        :type user_id: str
         :return: None
-        :rtype: None
         """
         UserRepository.delete_user(user_id)
         auth.delete_user(user_id)

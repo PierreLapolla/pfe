@@ -14,9 +14,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> Dict:
     Retrieve the current authenticated user based on the provided token.
 
     :param token: The OAuth2 token provided by the user.
-    :type token: str
     :return: The decoded token containing user information.
-    :rtype: Dict
     """
     decoded_token = auth.verify_id_token(token)
     log.info(f"decoded token: {decoded_token}")
