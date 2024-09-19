@@ -2,7 +2,7 @@ import logging
 from logging.handlers import QueueHandler, QueueListener
 from pathlib import Path
 from queue import Queue
-
+import colorlog  # Import colorlog for colored logging
 
 class LoggerSingleton:
     """
@@ -31,6 +31,7 @@ class LoggerSingleton:
             cls._instance.logger = logging.getLogger('app_logger')
             cls._instance.logger.setLevel(log_level)
 
+            # File handler for logging to file
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(log_level)
 
@@ -38,8 +39,30 @@ class LoggerSingleton:
             formatter = logging.Formatter(log_format)
             file_handler.setFormatter(formatter)
 
+            # QueueHandler to handle async logging
             queue_handler = QueueHandler(log_queue)
             cls._instance.logger.addHandler(queue_handler)
+
+            # Console handler with colorlog for colored output
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(log_level)
+
+            color_formatter = colorlog.ColoredFormatter(
+                "%(log_color)s%(asctime)s - %(levelname)s - %(message)s",
+                datefmt=None,
+                reset=True,
+                log_colors={
+                    'DEBUG': 'cyan',
+                    'INFO': 'green',
+                    'WARNING': 'yellow',
+                    'ERROR': 'red',
+                    'CRITICAL': 'bold_red',
+                },
+                secondary_log_colors={},
+                style='%'
+            )
+            console_handler.setFormatter(color_formatter)
+            cls._instance.logger.addHandler(console_handler)
 
             listener = QueueListener(log_queue, file_handler)
             listener.start()

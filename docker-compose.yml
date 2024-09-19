@@ -11,6 +11,8 @@ services:
       - PYTHONUNBUFFERED=1
 
   frontend:
+    depends_on:
+      - backend
     build:
       context: ./frontend
     volumes:
