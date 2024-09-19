@@ -9,7 +9,7 @@ from .logger import log
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> Dict:
+async def get_current_user_token(token: str = Depends(oauth2_scheme)) -> Dict:
     """
     Retrieve the current authenticated user based on the provided token.
 

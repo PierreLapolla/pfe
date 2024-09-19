@@ -1,8 +1,7 @@
 import logging
 from logging.handlers import QueueHandler, QueueListener
-from queue import Queue
 from pathlib import Path
-import time
+from queue import Queue
 
 
 class LoggerSingleton:
@@ -24,6 +23,8 @@ class LoggerSingleton:
 
             log_file = Path(f'logs/app.log')
             log_file.parent.mkdir(parents=True, exist_ok=True)
+            if log_file.exists():
+                log_file.unlink()
 
             log_queue = Queue()
 

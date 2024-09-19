@@ -1,5 +1,7 @@
-from fastapi.params import Depends
+from functools import lru_cache
+from typing import Dict
 
+from ..config_loader import config
 from ..database import db
 from ..logger import log
 from ..schemas.auth_schemas import ProfileResponse, RegisterRequest
@@ -19,9 +21,11 @@ class UserRepository:
             "display_name": user_data.display_name,
             "email": user_data.email
         })
-        log.debug(f"user {uid} saved")
+        UserRepository.get_profile_user.cache_clear()
+        log.debug(f"user saved to database: {user_data.email} {uid}")
 
     @staticmethod
+    @lru_cache(maxsize=config('cache_size', 10))
     def get_profile_user(uid: str) -> ProfileResponse:
         """
         Retrieve a user's profile from the database.
@@ -29,9 +33,9 @@ class UserRepository:
         :param uid: The unique identifier for the user.
         :return: The user's profile data.
         """
-        user_data = db.collection("users").document(uid).get().to_dict()
+        user_data: Dict = db.collection("users").document(uid).get().to_dict()
         response = ProfileResponse(uid=uid, **user_data)
-        log.debug(f"retrieved user {uid} profile")
+        log.debug(f"user profile retrieved: {user_data['email']} {uid}")
         return response
 
     @staticmethod
@@ -42,5 +46,8 @@ class UserRepository:
         :param uid: The unique identifier for the user.
         :return: None
         """
-        db.collection("users").document(uid).delete()
-        log.debug(f"user {uid} deleted")
+        user_document = db.collection("users").document(uid)
+        user_data: Dict = user_document.get().to_dict()
+        user_document.delete()
+        UserRepository.get_profile_user.cache_clear()
+        log.debug(f"user deleted: {user_data['email']}  {uid}")
