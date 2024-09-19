@@ -1,36 +1,49 @@
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import QueueHandler, QueueListener
+from queue import Queue
 from pathlib import Path
+import time
 
 
 class LoggerSingleton:
     """
-    Singleton class to initialize and manage the application logger.
+    Singleton class to initialize and manage the application logger with asynchronous logging support.
+    A new log file is created for each application run.
     """
     _instance = None
 
-    def __new__(cls) -> 'LoggerSingleton':
+    def __new__(cls, log_level=logging.INFO) -> 'LoggerSingleton':
         """
         Create a new instance of LoggerSingleton if it doesn't exist.
 
+        :param log_level: The logging level to be set for the logger.
         :return: The singleton instance of LoggerSingleton.
         """
         if cls._instance is None:
             cls._instance = super(LoggerSingleton, cls).__new__(cls)
-            log_file = Path('logs/app.log')
+
+            log_file = Path(f'logs/app.log')
             log_file.parent.mkdir(parents=True, exist_ok=True)
 
-            cls._instance.logger = logging.getLogger('app_logger')
-            cls._instance.logger.setLevel(logging.INFO)
+            log_queue = Queue()
 
-            handler = RotatingFileHandler(log_file, maxBytes=5 * 1024 * 1024, backupCount=3)
-            handler.setLevel(logging.INFO)
+            cls._instance.logger = logging.getLogger('app_logger')
+            cls._instance.logger.setLevel(log_level)
+
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(log_level)
 
             log_format = '%(asctime)s - %(levelname)s - %(pathname)s - %(funcName)s - %(message)s'
             formatter = logging.Formatter(log_format)
-            handler.setFormatter(formatter)
+            file_handler.setFormatter(formatter)
 
-            cls._instance.logger.addHandler(handler)
+            queue_handler = QueueHandler(log_queue)
+            cls._instance.logger.addHandler(queue_handler)
+
+            listener = QueueListener(log_queue, file_handler)
+            listener.start()
+
+            cls._instance.listener = listener
 
         return cls._instance
 
@@ -43,8 +56,7 @@ class LoggerSingleton:
         return self.logger
 
 
-logging.basicConfig(level=logging.DEBUG)
-log = LoggerSingleton().get_logger()
+log = LoggerSingleton(log_level=logging.INFO).get_logger()
 
 # Example usage
 # log.debug('debug message')

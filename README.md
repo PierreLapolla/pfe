@@ -1,8 +1,17 @@
 # PFE-Gaming
 
-## Description
+## Jeu Mobile Action-RPG Basé sur les Activités Physiques
 
-Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
+### Comment concevoir un jeu mobile action-RPG qui intègre de manière fluide les activités physiques et les données de sommeil du joueur pour influencer le gameplay, tout en offrant une expérience de jeu captivante et motivante ?
+
+Les jeux vidéo mobiles connaissent une popularité croissante avec plus de 2,7 milliards de joueurs dans le monde en 2023.
+Les jeux de rôle action (Action-RPG) sont particulièrement prisés pour leur gameplay dynamique et immersif.
+Parallèlement, le suivi des activités physiques et des cycles de sommeil est devenu une tendance importante avec
+l'adoption massive de montres connectées et d'applications de bien-être.
+Associer le gameplay à la vie réelle du joueur en utilisant ses données de santé et de bien-être ouvre la voie à une
+expérience ludique unique et motivante.
+En intégrant l’activité physique et les données de sommeil, ce jeu pourrait proposer une progression personnalisée en
+fonction des efforts réels du joueur, l’incitant à adopter un mode de vie plus sain.
 
 ## Installation
 
@@ -18,6 +27,11 @@ Bon la team vous voyez Solo Leveling? Bah voilà c'est ça mais en mieux.
 2. Rename [.env.template](backend/.env.template) in `backend/` to `.env` and fill in the required fields
 3. Rename [.env.template](frontend/.env.template) in `frontend/` to `.env` and fill in the required fields
 4. Copy the secrets from Discord to `backend/`
+5. (Optional) Install the Python dependencies:
+    ```bash
+    pip install -r backend/requirements.txt
+    pip install -r frontend/requirements.txt
+    ```
 
 ### Run
 

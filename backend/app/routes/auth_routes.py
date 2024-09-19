@@ -19,7 +19,7 @@ async def register_user(user: RegisterRequest) -> Dict:
     :return: A message indicating successful user creation.
     """
     AuthService.register_user(user)
-    log.info(f"user {user.email} registered successfully")
+    log.debug(f"user {user.email} registered successfully")
     return {"message": "User created successfully"}
 
 
@@ -32,7 +32,7 @@ async def login_user(user: LoginRequest) -> Dict:
     :return: The ID token for the logged-in user.
     """
     id_token = AuthService.login_user(user.email, user.password)
-    log.info(f"user {user.email} logged in successfully")
+    log.debug(f"user {user.email} logged in successfully")
     return {"id_token": id_token}
 
 
@@ -45,7 +45,7 @@ async def logout_user(response: Response) -> Dict:
     :return: A message indicating successful user logout.
     """
     AuthService.logout_user(response)
-    log.info(f"user logged out successfully")
+    log.debug(f"user logged out successfully")
     return {"message": "User logged out successfully"}
 
 
@@ -58,7 +58,7 @@ async def delete_user(current_user: Dict = Depends(get_current_user)) -> Dict:
     :return: A message indicating successful user deletion.
     """
     AuthService.delete_user(current_user['uid'])
-    log.info(f"user {current_user['email']} deleted successfully")
+    log.debug(f"user {current_user['email']} deleted successfully")
     return {"message": "User deleted successfully"}
 
 
@@ -71,5 +71,5 @@ async def get_profile_user(current_user: Dict = Depends(get_current_user)) -> Pr
     :return: The profile data of the current user.
     """
     profile = AuthService.get_profile_user(current_user['uid'])
-    log.info(f"user {profile.email} profile retrieved successfully")
+    log.debug(f"user {profile.email} profile retrieved successfully")
     return profile

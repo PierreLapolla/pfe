@@ -17,5 +17,5 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> Dict:
     :return: The decoded token containing user information.
     """
     decoded_token = auth.verify_id_token(token)
-    log.info(f"decoded token: {decoded_token}")
+    log.debug(f"decoded token: {decoded_token}")
     return decoded_token

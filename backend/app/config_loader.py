@@ -57,12 +57,12 @@ class ConfigSingleton:
         for key in self.config:
             env_value = os.getenv(key)
             if env_value is not None:
-                log.info(f"overriding config key '{key}' with value from environment variable '{key}'")
+                log.debug(f"overriding config key '{key}' with value from environment variable '{key}'")
                 self.config[key] = env_value
 
         for key, value in os.environ.items():
             if key.upper() not in self.config:
-                log.info(f"adding environment variable '{key}' to config")
+                log.debug(f"adding environment variable '{key}' to config")
                 self.config[key] = value
 
 

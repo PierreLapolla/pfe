@@ -1,3 +1,5 @@
+from fastapi.params import Depends
+
 from ..database import db
 from ..logger import log
 from ..schemas.auth_schemas import ProfileResponse, RegisterRequest
@@ -17,7 +19,7 @@ class UserRepository:
             "display_name": user_data.display_name,
             "email": user_data.email
         })
-        log.info(f"user {uid} saved")
+        log.debug(f"user {uid} saved")
 
     @staticmethod
     def get_profile_user(uid: str) -> ProfileResponse:
@@ -29,7 +31,7 @@ class UserRepository:
         """
         user_data = db.collection("users").document(uid).get().to_dict()
         response = ProfileResponse(uid=uid, **user_data)
-        log.info(f"retrieved user {uid} profile")
+        log.debug(f"retrieved user {uid} profile")
         return response
 
     @staticmethod
@@ -41,4 +43,4 @@ class UserRepository:
         :return: None
         """
         db.collection("users").document(uid).delete()
-        log.info(f"user {uid} deleted")
+        log.debug(f"user {uid} deleted")
