@@ -54,16 +54,19 @@ class AuthService:
         return id_token
 
     @staticmethod
-    def logout_user(response: Response) -> None:
+    def logout_user(uid: str, response: Response) -> None:
         """
-        Log out the current user.
+        Log out the current user by revoking the Firebase token and deleting cookies.
 
         :param response: The response object.
+        :param uid: The unique identifier for the user.
         :return: None
         """
+        auth.revoke_refresh_tokens(uid)
         response.delete_cookie("id_token")
         response.delete_cookie("refresh_token")
-        log.info(f"user logged out")
+        log.info(f"user logged out and token invalidated: {uid}")
+
 
     @staticmethod
     def get_profile_user(uid: str) -> ProfileResponse:

@@ -65,9 +65,15 @@ def profile() -> FlaskResponse:
 
 @app.route('/auth/logout')
 def logout() -> FlaskResponse:
-    session.pop('id_token', None)
-    flash("You have been logged out.", "success")
-    return redirect(url_for('index'))
+    if not is_logged_in():
+        flash("You need to log in first.", "warning")
+        return redirect(url_for('login'))
+
+    id_token = session.pop('id_token', None)
+    headers = {"Authorization": f"Bearer {id_token}"}
+    response = make_api_request('/auth/logout', method='POST', headers=headers)
+    return handle_response(response, "You have been logged out.", 'index', "Logout failed")
+
 
 
 @app.route('/auth/delete', methods=['POST'])

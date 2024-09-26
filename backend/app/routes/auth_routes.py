@@ -37,15 +37,16 @@ async def login_user(user: LoginRequest) -> Dict:
 
 
 @router.post("/auth/logout")
-async def logout_user(response: Response) -> Dict:
+async def logout_user(response: Response, current_user: Dict = Depends(get_current_user_token)) -> Dict:
     """
     Log out the current user.
 
     :param response: The response object.
+    :param current_user: The current authenticated user.
     :return: A message indicating successful user logout.
     """
-    AuthService.logout_user(response)
-    log.debug(f"user logged out")
+    AuthService.logout_user(current_user['uid'], response)
+    log.debug(f"user logged out: {current_user['uid']}")
     return {"message": "User logged out successfully"}
 
 
