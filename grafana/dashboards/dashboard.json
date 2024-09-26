@@ -23,8 +23,8 @@
     {
       "datasource": {
         "default": true,
-        "name": "Prometheus",
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -81,24 +81,11 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "process_virtual_memory_bytes / (16 * 1024 * 1024 * 1024) * 100",
+          "expr": "(process_resident_memory_bytes / node_memory_MemTotal_bytes) * 100",
           "instant": false,
           "legendFormat": "Virutal Memory",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "name": "Prometheus",
-            "type": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "process_resident_memory_bytes / (16 * 1024 * 1024 * 1024) * 100\n",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Resident Memory",
-          "range": true,
-          "refId": "B"
         }
       ],
       "title": "Memory Usage",
@@ -107,8 +94,8 @@
     {
       "datasource": {
         "default": true,
-        "name": "Prometheus",
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -165,9 +152,9 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(process_cpu_seconds_total[1m]) * 100 / 4\n",
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
           "instant": false,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
@@ -178,8 +165,8 @@
     {
       "datasource": {
         "default": true,
-        "name": "Prometheus",
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -251,7 +238,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -266,24 +253,11 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "process_virtual_memory_bytes / (16 * 1024 * 1024 * 1024) * 100",
+          "expr": "(process_resident_memory_bytes / node_memory_MemTotal_bytes) * 100",
           "instant": false,
-          "legendFormat": "Virutal Memory",
+          "legendFormat": "Virtual Memory",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "name": "Prometheus",
-            "type": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "process_resident_memory_bytes / (16 * 1024 * 1024 * 1024) * 100\n",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Resident Memory",
-          "range": true,
-          "refId": "B"
         }
       ],
       "title": "Memory Usage",
@@ -292,8 +266,8 @@
     {
       "datasource": {
         "default": true,
-        "name": "Prometheus",
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -380,7 +354,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(process_cpu_seconds_total[1m]) * 100 / 4\n",
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
