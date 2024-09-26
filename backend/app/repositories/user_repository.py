@@ -1,45 +1,44 @@
-from functools import wraps
-from typing import Dict
+from typing import Dict, Optional
 
 from ..database import db
 from ..logger import log
 from ..schemas.auth_schemas import ProfileResponse, RegisterRequest
 
-_user_cache = {}
-
-
-def cache_user_profile(func):
+class UserCache:
     """
-    Decorator to cache the user profile data to limit database queries.
-    Provides a mechanism to invalidate the cache based on uid.
+    A class to handle caching of user profile data.
     """
+    def __init__(self):
+        self._cache = {}
 
-    @wraps(func)
-    def wrapper(uid, *args, **kwargs):
-        if uid in _user_cache:
+    def get(self, uid: str) -> Optional[ProfileResponse]:
+        """
+        Retrieve a user profile from the cache.
+        """
+        if uid in self._cache:
             log.debug(f"cache hit for uid: {uid}")
-            return _user_cache[uid]
-        else:
-            log.debug(f"cache miss for uid: {uid}. Fetching from database.")
-            result = func(uid, *args, **kwargs)
-            _user_cache[uid] = result
-            return result
+            return self._cache[uid]
+        log.debug(f"cache miss for uid: {uid}")
+        return None
 
-    def invalidate_cache(uid):
+    def set(self, uid: str, data: ProfileResponse) -> None:
+        """
+        Set user profile data in the cache.
+        """
+        log.debug(f"setting cache for uid: {uid}")
+        self._cache[uid] = data
+
+    def invalidate(self, uid: str) -> None:
         """
         Invalidate the cache for a specific user.
-
-        :param uid: The unique identifier for the user.
         """
-        if uid in _user_cache:
+        if uid in self._cache:
             log.debug(f"invalidating cache for uid: {uid}")
-            del _user_cache[uid]
-
-    wrapper.invalidate_cache = invalidate_cache
-    return wrapper
-
+            del self._cache[uid]
 
 class UserRepository:
+    _user_cache = UserCache()
+
     @staticmethod
     def save_user(uid: str, user_data: RegisterRequest) -> None:
         """
@@ -49,18 +48,22 @@ class UserRepository:
             "display_name": user_data.display_name,
             "email": user_data.email
         })
-        UserRepository.get_profile_user.invalidate_cache(uid)
+        UserRepository._user_cache.invalidate(uid)
         log.debug(f"user saved to database: {user_data.email} {uid}")
 
     @staticmethod
-    @cache_user_profile
     def get_profile_user(uid: str) -> ProfileResponse:
         """
-        Retrieve a user's profile from the database.
+        Retrieve a user's profile, checking cache first before querying the database.
         """
+        cached_data = UserRepository._user_cache.get(uid)
+        if cached_data:
+            return cached_data
+
         user_data: Dict = db.collection("users").document(uid).get().to_dict()
         response = ProfileResponse(uid=uid, **user_data)
         log.debug(f"user profile retrieved: {user_data['email']} {uid}")
+        UserRepository._user_cache.set(uid, response)
         return response
 
     @staticmethod
@@ -71,5 +74,5 @@ class UserRepository:
         user_document = db.collection("users").document(uid)
         user_data: Dict = user_document.get().to_dict()
         user_document.delete()
-        UserRepository.get_profile_user.invalidate_cache(uid)
-        log.debug(f"user deleted: {user_data['email']}  {uid}")
+        UserRepository._user_cache.invalidate(uid)
+        log.debug(f"user deleted: {user_data['email']} {uid}")
