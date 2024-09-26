@@ -1,7 +1,5 @@
-from functools import lru_cache
 from typing import Dict
 
-from ..config_loader import config
 from ..database import db
 from ..logger import log
 from ..schemas.auth_schemas import ProfileResponse, RegisterRequest
@@ -21,11 +19,9 @@ class UserRepository:
             "display_name": user_data.display_name,
             "email": user_data.email
         })
-        UserRepository.get_profile_user.cache_clear()
         log.debug(f"user saved to database: {user_data.email} {uid}")
 
     @staticmethod
-    @lru_cache(maxsize=config('cache_size', 10))
     def get_profile_user(uid: str) -> ProfileResponse:
         """
         Retrieve a user's profile from the database.
@@ -49,5 +45,4 @@ class UserRepository:
         user_document = db.collection("users").document(uid)
         user_data: Dict = user_document.get().to_dict()
         user_document.delete()
-        UserRepository.get_profile_user.cache_clear()
         log.debug(f"user deleted: {user_data['email']}  {uid}")

@@ -23,7 +23,7 @@ class FirebaseClient:
         if cls._instance is None:
             credentials_path = Path(config('FIREBASE_CREDENTIALS_PATH'))
             if not credentials_path.is_file():
-                log.critical(f'firebase credentials file not found: {credentials_path}')
+                log.error(f'firebase credentials file not found: {credentials_path}')
                 raise FileNotFoundError(f'Firebase credentials file not found: {credentials_path}')
 
             initialize_app(credentials.Certificate(credentials_path))

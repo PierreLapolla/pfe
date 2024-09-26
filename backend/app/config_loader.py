@@ -13,7 +13,7 @@ class ConfigSingleton:
     """
     _instance = None
 
-    def __new__(cls, file_path: Union[str, Path]) -> 'ConfigSingleton':
+    def __new__(cls, file_path: Optional[Union[str, Path]] = None) -> 'ConfigSingleton':
         """
         Create a new instance of ConfigSingleton if it doesn't exist.
 
@@ -23,19 +23,20 @@ class ConfigSingleton:
         if cls._instance is None:
             cls._instance = super(ConfigSingleton, cls).__new__(cls)
             cls._instance.config = {}
-            config_file = Path(file_path)
 
-            if config_file.is_file():
-                with open(config_file, 'r') as file:
-                    cls._instance.config = yaml.safe_load(file) or {}
-            else:
-                log.error(f"config file '{config_file}' not found")
+            if file_path is not None:
+                config_file = Path(file_path)
+                if config_file.is_file():
+                    with open(config_file, 'r') as file:
+                        cls._instance.config = yaml.safe_load(file) or {}
+                else:
+                    log.error(f"config file '{config_file}' not found")
 
             cls._instance._merge_env_variables()
 
         return cls._instance
 
-    def __call__(self, key: str, default: Optional[Any] = None) -> Optional[Any]:
+    def __call__(self, key: str, default: Optional[Any] = None) -> Any:
         """
         Get a configuration value by key.
 
@@ -43,9 +44,15 @@ class ConfigSingleton:
         :param default: The default value to return if the key is not found.
         :return: The configuration value or the default value if the key is not found.
         """
+        if key not in self.config and default is None:
+            log.error(f"config key '{key}' not found and no default value provided")
+            raise KeyError(f"config key '{key}' not found and no default value provided")
+
         var = self.config.get(key, default)
-        if var == default:
-            log.warning(f"config key '{key}' not found or same as default, using default value")
+
+        if var is None:
+            log.warning(f"config key '{key}' not found, using default value")
+
         return var
 
     def _merge_env_variables(self) -> None:
@@ -61,7 +68,7 @@ class ConfigSingleton:
                 self.config[key] = env_value
 
         for key, value in os.environ.items():
-            if key.upper() not in self.config:
+            if key not in self.config:
                 log.debug(f"adding environment variable '{key}' to config")
                 self.config[key] = value
 

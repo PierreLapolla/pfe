@@ -39,6 +39,8 @@ fonction des efforts réels du joueur, l’incitant à adopter un mode de vie pl
 2. Click the double green arrow next to `services`
 3. See backend documentation at [localhost:8000/docs](http://localhost:8000/docs)
 4. See frontend at [localhost:3000](http://localhost:3000)
+5. See Prometheus at [localhost:9090](http://localhost:9090) (kinda useless ngl)
+6. See Grafana at [localhost:3001](http://localhost:3001)
 
 ### LaTeX
 

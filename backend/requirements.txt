@@ -6,3 +6,4 @@ email-validator==2.2.0
 python-dotenv==1.0.1
 PyYAML==6.0.2
 colorlog==6.8.2
+prometheus-fastapi-instrumentator==7.0.0
