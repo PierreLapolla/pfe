@@ -1,3 +1,5 @@
+import re
+
 import requests
 from fastapi import HTTPException, Response
 from firebase_admin import auth
@@ -10,6 +12,20 @@ from ..schemas.auth_schemas import LoginRequest, ProfileResponse, RegisterReques
 
 class AuthService:
     @staticmethod
+    def validate_password(password: str):
+        if len(password) < 8:
+            raise HTTPException(status_code=400, detail="Password must be at least 8 characters long.")
+
+        if not re.search(r"[A-Z]", password):
+            raise HTTPException(status_code=400, detail="Password must contain at least one uppercase letter.")
+
+        if not re.search(r"[a-z]", password):
+            raise HTTPException(status_code=400, detail="Password must contain at least one lowercase letter.")
+
+        if not re.search(r"[0-9]", password):
+            raise HTTPException(status_code=400, detail="Password must contain at least one number.")
+
+    @staticmethod
     def register_user(user_data: RegisterRequest) -> None:
         """
         Register a new user.
@@ -17,6 +33,7 @@ class AuthService:
         :param user_data: The user registration data.
         :return: None
         """
+        AuthService.validate_password(user_data.password)
         user_record = auth.create_user(
             email=user_data.email,
             password=user_data.password,
@@ -63,10 +80,9 @@ class AuthService:
         :return: None
         """
         auth.revoke_refresh_tokens(uid)
-        response.delete_cookie("id_token")
-        response.delete_cookie("refresh_token")
+        response.delete_cookie("id_token", httponly=True, secure=True, samesite='strict')
+        response.delete_cookie("refresh_token", httponly=True, secure=True, samesite='strict')
         log.info(f"user logged out and token invalidated: {uid}")
-
 
     @staticmethod
     def get_profile_user(uid: str) -> ProfileResponse:
