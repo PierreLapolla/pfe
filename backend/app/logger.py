@@ -77,4 +77,4 @@ class LoggerSingleton:
         return self.logger
 
 
-log = LoggerSingleton(log_level=logging.INFO).get_logger()
+log = LoggerSingleton(log_level=logging.DEBUG).get_logger()
