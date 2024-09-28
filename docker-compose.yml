@@ -1,6 +1,6 @@
 services:
 
-  backend:
+  backend: # --
     build:
       context: ./backend
     volumes:
@@ -10,9 +10,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
 
-  frontend:
-    depends_on:
-      - backend
+  frontend: # --
     build:
       context: ./frontend
     volumes:
@@ -22,7 +20,7 @@ services:
     environment:
       - FLASK_ENV=development # development, production
 
-  prometheus:
+  prometheus: # Scrapes data from the backend and node_exporter
     image: prom/prometheus:latest
     volumes:
       - ./monitoring/prometheus:/etc/prometheus
@@ -31,7 +29,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
 
-  grafana:
+  grafana: # query data from prometheus
     image: grafana/grafana:latest
     ports:
       - "3001:3000"
@@ -45,10 +43,36 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
 
-  node_exporter:
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./monitoring/loki/loki-local-config.yaml:/etc/loki/loki-local-config.yaml
+      - loki-index:/loki/index
+      - loki-boltdb-cache:/loki/boltdb-cache
+      - loki-chunks:/loki/chunks
+      - loki-wal:/wal
+      - loki-compactor:/loki/compactor
+    command: -config.file=/etc/loki/loki-local-config.yaml
+    user: "0:0"
+
+  promtail: # agent to collect logs
+    image: grafana/promtail:latest
+    volumes:
+      - ./backend:/app
+      - ./monitoring/promtail:/etc/promtail
+    command: -config.file=/etc/promtail/promtail-config.yaml
+
+  node_exporter: # exposes system metrics
     image: prom/node-exporter:latest
     ports:
       - "9100:9100"
 
 volumes:
   grafana_data:
+  loki-index:
+  loki-boltdb-cache:
+  loki-chunks:
+  loki-wal:
+  loki-compactor:

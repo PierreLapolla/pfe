@@ -1,5 +1,5 @@
-# grafana/provisioning/datasources/prometheus.yaml
 apiVersion: 1
+
 datasources:
   - name: Prometheus
     type: prometheus

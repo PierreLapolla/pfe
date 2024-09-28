@@ -40,7 +40,7 @@ class AuthService:
             display_name=user_data.display_name
         )
         UserRepository.save_user(user_record.uid, user_data)
-        log.info(f"user registered: {user_data.email} {user_record.uid}")
+        log.debug(f"user registered: {user_data.email} {user_record.uid}")
 
     @staticmethod
     def login_user(user_data: LoginRequest) -> str:
@@ -67,7 +67,7 @@ class AuthService:
             raise HTTPException(status_code=response.status_code, detail="Invalid credentials")
 
         id_token = response.json().get('idToken')
-        log.info(f"user logged in: {user_data.email} {id_token}")
+        log.debug(f"user logged in: {user_data.email} {id_token}")
         return id_token
 
     @staticmethod
@@ -82,7 +82,7 @@ class AuthService:
         auth.revoke_refresh_tokens(uid)
         response.delete_cookie("id_token", httponly=True, secure=True, samesite='strict')
         response.delete_cookie("refresh_token", httponly=True, secure=True, samesite='strict')
-        log.info(f"user logged out and token invalidated: {uid}")
+        log.debug(f"user logged out and token invalidated: {uid}")
 
     @staticmethod
     def get_profile_user(uid: str) -> ProfileResponse:
@@ -93,7 +93,7 @@ class AuthService:
         :return: The profile data of the user.
         """
         profile = UserRepository.get_profile_user(uid)
-        log.info(f"user profile retrieved: {profile.email} {uid}")
+        log.debug(f"user profile retrieved: {profile.email} {uid}")
         return profile
 
     @staticmethod
@@ -106,4 +106,4 @@ class AuthService:
         """
         UserRepository.delete_user(uid)
         auth.delete_user(uid)
-        log.info(f"user deleted: {uid}")
+        log.debug(f"user deleted: {uid}")

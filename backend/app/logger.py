@@ -34,7 +34,7 @@ class LoggerSingleton:
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(log_level)
 
-            log_format = '%(asctime)s - %(levelname)s - %(pathname)s - %(funcName)s - %(message)s'
+            log_format = '%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s - %(message)s'
             formatter = logging.Formatter(log_format)
             file_handler.setFormatter(formatter)
 

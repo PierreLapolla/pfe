@@ -39,8 +39,8 @@ fonction des efforts réels du joueur, l’incitant à adopter un mode de vie pl
 2. Click the double green arrow next to `services`
 3. [localhost:8000/docs](http://localhost:8000/docs): Backend documentation
 4. [localhost:3000](http://localhost:3000): Frontend
-5. [localhost:9090](http://localhost:9090): Prometheus
-6. [localhost:3001](http://localhost:3001): Grafana
+5. [localhost:3001](http://localhost:3001): Grafana
+6. See other services from [docker-compose.yml](docker-compose.yml) at their respective ports
 
 ### LaTeX
 
