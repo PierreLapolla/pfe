@@ -3,7 +3,7 @@
 % Geometry for page layout
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[frenchb]{babel} % Language 'english' or 'frenchb', delete out/ if changing language
+\usepackage[french]{babel} % Language 'english' or 'french', delete out/ if changing language
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
 
@@ -45,9 +45,9 @@
     Matéo DOMINGUEZ \and
     Alban GAUTROT \and
     Thomas ROUSTAN \and
-    Arnaud BECKER
+    Arnaud BECKER \and
+    Vincent JOUANNEAU
 }
-
 % Hyperref setup
 \hypersetup{
     colorlinks=true,
@@ -84,9 +84,13 @@
 
 \begin{document}
 
-    \input{sections/cover}
+    \input{sections/couverture}
 
-    \input{sections/introduction}
+    \input{sections/semaine1}
+
+    \input{sections/glossaire}
+
+    \input{sections/annexes}
 
     \bibliographystyle{unsrt}
     \bibliography{references}

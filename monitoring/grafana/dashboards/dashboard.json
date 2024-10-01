@@ -371,7 +371,7 @@
           "refId": "A"
         }
       ],
-      "title": "Total Request Count",
+      "title": "Total Call Count",
       "type": "stat"
     },
     {
@@ -440,7 +440,7 @@
           "refId": "B"
         }
       ],
-      "title": "Request Count",
+      "title": "Call Count",
       "type": "bargauge"
     },
     {
@@ -511,7 +511,7 @@
           "refId": "A"
         }
       ],
-      "title": "Average Request Duration (ms)",
+      "title": "Average Call Duration (s)",
       "type": "bargauge"
     },
     {
@@ -562,7 +562,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
