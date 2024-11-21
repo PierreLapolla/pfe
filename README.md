@@ -26,11 +26,12 @@ fonction des efforts réels du joueur, l’incitant à adopter un mode de vie pl
 1. Clone the repository
 2. Rename [.env.template](backend/.env.template) in `backend/` to `.env` and fill in the required fields
 3. Rename [.env.template](frontend/.env.template) in `frontend/` to `.env` and fill in the required fields
-4. Copy the secrets from Discord to `backend/`
+4. Copy the secrets (firebase credentials) from Discord to `backend/`
 5. (Optional) Install the Python dependencies:
     ```bash
     pip install -r backend/requirements.txt
     pip install -r frontend/requirements.txt
+    pip install locust
     ```
 
 ### Run
@@ -44,12 +45,7 @@ fonction des efforts réels du joueur, l’incitant à adopter un mode de vie pl
 
 ### LaTeX
 
-Compile as usual or use the following commands:
-
-```bash
-pip install docker
-python3 rapport/compile.py
-```
+Ask Pedro
 
 ## Notes
 

@@ -10,15 +10,26 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
 
-  frontend: # --
-    build:
-      context: ./frontend
-    volumes:
-      - ./frontend:/app
-    ports:
-      - "3000:3000"
-    environment:
-      - FLASK_ENV=development # development, production
+#  frontend: # --
+#    build:
+#      context: ./frontend
+#    volumes:
+#      - ./frontend:/app
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - FLASK_ENV=development # development, production
+
+#  nextjs_frontend:
+#    build:
+#      context: ./nextjs_frontend
+#    volumes:
+#      - ./nextjs_frontend:/app
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - NODE_ENV=development
+#      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
 
   prometheus: # Scrapes data from the backend and node_exporter
     image: prom/prometheus:latest
@@ -49,12 +60,13 @@ services:
       - "3100:3100"
     volumes:
       - ./monitoring/loki/loki-local-config.yaml:/etc/loki/loki-local-config.yaml
-      - loki-index:/loki/index
-      - loki-boltdb-cache:/loki/boltdb-cache
-      - loki-chunks:/loki/chunks
-      - loki-wal:/wal
-      - loki-compactor:/loki/compactor
-    command: -config.file=/etc/loki/loki-local-config.yaml
+      - ./monitoring/loki/index:/loki/index
+      - ./monitoring/loki/boltdb-cache:/loki/boltdb-cache
+      - ./monitoring/loki/chunks:/loki/chunks
+      - ./monitoring/loki/compactor:/loki/compactor
+    command: >
+      -config.file=/etc/loki/loki-local-config.yaml
+      -config.expand-env=true
     user: "0:0"
 
   promtail: # agent to collect logs

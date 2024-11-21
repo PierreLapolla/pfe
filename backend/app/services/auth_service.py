@@ -33,7 +33,7 @@ class AuthService:
         :param user_data: The user registration data.
         :return: None
         """
-        AuthService.validate_password(user_data.password)
+        # AuthService.validate_password(user_data.password)
         user_record = auth.create_user(
             email=user_data.email,
             password=user_data.password,
